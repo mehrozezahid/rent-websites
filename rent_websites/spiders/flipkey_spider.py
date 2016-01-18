@@ -26,14 +26,14 @@ class FlipkeySpider(RentBaseSpider):
     def parse_pages(self, response):
         """Handling pagination through POST requests"""
 
-        # extracting request data from page source
-        extracted_text = response.xpath('//script[contains(.,"Object.PHPJSON")]//text()').extract()
-        json_extracted = re.search("Object.PHPJSON\s*=\s*'([^']+)'", extracted_text[0])
-
-        if json_extracted:
-            result = json_extracted.group(1)
-
         if response.xpath("//*[@class='search-pagination']"):
+            # extracting request data from page source
+            extracted_text = response.xpath('//script[contains(.,"Object.PHPJSON")]//text()').extract()
+            json_extracted = re.search("Object.PHPJSON\s*=\s*'([^']+)'", extracted_text[0])
+
+            if json_extracted:
+                result = json_extracted.group(1)
+
             # extracting number of result pages for each location
             total_pages_text = response.xpath("(//*[@id='search-pages']/text())").extract()[0]
             total_num_pages = re.search("of\s*(\d+)", total_pages_text)
@@ -62,4 +62,4 @@ class FlipkeySpider(RentBaseSpider):
 
     def get_price(self, response):
         price = response.xpath("//*[@id='price_field']/text()").extract()
-        return response.xpath("//*[@id='rental_price']/text()").extract()[0].strip() if not price else price
+        return price[0] if price else response.xpath("//*[@id='rental_price']/text()").extract()[0].strip()

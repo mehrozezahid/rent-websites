@@ -10,6 +10,5 @@ import scrapy
 
 class PlaceItem(scrapy.Item):
     item_source = scrapy.Field()
-    referrer = scrapy.Field()
     name = scrapy.Field()
     price = scrapy.Field()

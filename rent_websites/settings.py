@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from datetime import datetime
+datetime.now().strftime("%Y%m%d_%H%M%S")
 
 # Scrapy settings for rent_websites project
 #
@@ -85,3 +87,9 @@ AUTOTHROTTLE_ENABLED=True
 #HTTPCACHE_STORAGE='scrapy.extensions.httpcache.FilesystemCacheStorage'
 
 DUPEFILTER_DEBUG=True
+
+FEED_EXPORTERS = {
+    'csv': 'scrapy.contrib.exporter.CsvItemExporter',
+}
+FEED_FORMAT = 'csv'
+FEED_URI = "%(name)s_%(time)s.csv"
